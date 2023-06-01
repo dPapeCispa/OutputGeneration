@@ -1,7 +1,7 @@
 # OutputGeneration
 
 ## Arguments
-'''
+```
 usage: generate_output.py [-h] --model_type MODEL_TYPE --model_name_or_path MODEL_NAME_OR_PATH [--sample_size SAMPLE_SIZE] [--temp TEMP] [--path PATH]
                           [--max_new_tokens MAX_NEW_TOKENS] [--k K] [--p P] [--repetition_penalty REPETITION_PENALTY] [--dtype DTYPE] [--deepspeed] [--bf] [--prompts PROMPTS]
                           [--column_name COLUMN_NAME] [--lang LANG]
@@ -27,4 +27,4 @@ optional arguments:
   --column_name COLUMN_NAME
                         Column name of the prompts in the dataframe
   --lang LANG           Programming language
- '''
+ ```
