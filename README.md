@@ -28,3 +28,17 @@ optional arguments:
                         Column name of the prompts in the dataframe
   --lang LANG           Programming language
  ```
+
+## Sample Usage
+
+```
+python3 generate_output.py --model_type codegen --model_name_or_path Salesforce/Codegen-2B-multi --sample_size 1 --temp 0.2 --path Code_files --max_new_tokens 1536 --k 0 --p 0.95 --dtype fp16 --bf --prompts DatasetGeneration/CWE_119_CWE_120_C_DB_finished.parquet.gzip --column_name prompts --lang C --deepspeed --repetition_penalty 1.01
+```
+
+## Setup
+Use virtual environment with `python3.9.15`
+### Requirements
+To install requirements and dependencies, use 
+```
+pip install -r requirements.txt
+```
