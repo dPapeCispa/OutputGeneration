@@ -4,3 +4,4 @@ deepspeed
 accelerate
 bitsandbytes
 mpi4py
+scipy
