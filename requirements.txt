@@ -3,3 +3,4 @@ optimum
 deepspeed
 accelerate
 bitsandbytes
+mpi4py
