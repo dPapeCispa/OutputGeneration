@@ -124,7 +124,7 @@ def functional_output_generation(args: Namespace, prompt: str, model: HuggingFac
     correct_outputs_amount = 0
     sample_size = args.sample_size
     num_retries = 0
-    while(correct_outputs_amount < sample_size and num_retries < MAX_NUMBER_OF_RETRIES):
+    while(correct_outputs_amount < args.sample_size and num_retries < MAX_NUMBER_OF_RETRIES):
         try:
             output = model.generate(
                 prompt=prompt, 
