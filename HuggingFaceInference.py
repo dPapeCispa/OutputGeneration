@@ -65,7 +65,6 @@ class HuggingFaceModel():
     def generate(
             self, 
             prompt: str, 
-            max_new_tokens: int,
             k: int,
             p: float,
             temp: float, 
@@ -80,7 +79,6 @@ class HuggingFaceModel():
                 if(token_size > self.model.config.n_positions):
                     raise
                 max_new_tokens = self.model.config.n_positions - token_size  
-                #print(f'Max new tokens generated: {max_new_tokens}')
                 generated_ids = self.model.generate(
                     ids, 
                     max_new_tokens=max_new_tokens, 
