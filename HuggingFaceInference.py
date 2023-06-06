@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from optimum.bettertransformer import BetterTransformer
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoConfig
 import deepspeed
 
 MODEL_CLASSES = {
