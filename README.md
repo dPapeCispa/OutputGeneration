@@ -2,9 +2,8 @@
 
 ## Arguments
 ```
-usage: generate_output.py [-h] --model_type MODEL_TYPE --model_name_or_path MODEL_NAME_OR_PATH [--sample_size SAMPLE_SIZE] [--temp TEMP] [--path PATH]
-                          [--max_new_tokens MAX_NEW_TOKENS] [--k K] [--p P] [--repetition_penalty REPETITION_PENALTY] [--dtype DTYPE] [--deepspeed] [--bf] [--prompts PROMPTS]
-                          [--column_name COLUMN_NAME] [--lang LANG]
+usage: generate_output.py [-h] --model_type MODEL_TYPE --model_name_or_path MODEL_NAME_OR_PATH [--sample_size SAMPLE_SIZE] [--temp TEMP] [--path PATH] [--k K] [--p P]
+                          [--repetition_penalty REPETITION_PENALTY] [--dtype DTYPE] [--deepspeed] [--bf] [--prompts PROMPTS] [--column_name COLUMN_NAME] [--lang LANG]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -16,7 +15,6 @@ optional arguments:
                         #Samples created by the model for each prompt
   --temp TEMP           Temperature of the model
   --path PATH           Directory for the created code files
-  --max_new_tokens MAX_NEW_TOKENS
   --k K
   --p P
   --repetition_penalty REPETITION_PENALTY
@@ -32,7 +30,7 @@ optional arguments:
 ## Sample Usage
 
 ```
-python3 generate_output.py --model_type codegen --model_name_or_path Salesforce/Codegen-2B-multi --sample_size 1 --temp 0.2 --path Code_files --max_new_tokens 1536 --k 0 --p 0.95 --dtype fp16 --bf --prompts DatasetGeneration/CWE_119_CWE_120_C_DB_finished.parquet.gzip --column_name prompts --lang C --deepspeed --repetition_penalty 1.01
+python3 generate_output.py --model_type codegen --model_name_or_path Salesforce/Codegen-2B-multi --sample_size 1 --temp 0.2 --path Code_files --k 0 --p 0.95 --dtype fp16 --bf --prompts DatasetGeneration/CWE_119_CWE_120_C_DB_finished.parquet.gzip --column_name prompts --lang C --deepspeed --repetition_penalty 1.01
 ```
 
 ## Setup
