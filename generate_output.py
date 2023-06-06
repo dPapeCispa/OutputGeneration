@@ -136,7 +136,7 @@ def functional_output_generation(args: Namespace, prompt: str, model: HuggingFac
                 sample_size=sample_size
             )
         except Exception as e:
-            logger.debug(f'Error generating output. Output: {e}. ')
+            logger.debug(f'Error generating output. Output: {e}')
             return []
         decoded_output = model.decode_tensor_batch(output)
         extracted_functions = extract_function(decoded_output, args.lang, prompt)
@@ -150,7 +150,7 @@ def main(args: Namespace, path: Path) -> None:
     logger.info(args)
     logger.debug(f'Loading prompts...')
     prompts = load_prompts(args.prompts, args.column_name)
-    logger.debug(f'{len(prompts)} loaded...')
+    logger.debug(f'{len(prompts)} prompts loaded...')
     logger.debug(f'Loading model...')
     model = load_model(args)
     for sample_idx, prompt_list in enumerate(prompts):
