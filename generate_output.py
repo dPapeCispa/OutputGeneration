@@ -128,7 +128,6 @@ def functional_output_generation(args: Namespace, prompt: str, model: HuggingFac
         try:
             output = model.generate(
                 prompt=prompt, 
-                max_new_tokens=args.max_new_tokens, 
                 k=args.k, 
                 p=args.p, 
                 temp=args.temp, 
@@ -188,7 +187,6 @@ if __name__ == "__main__":
     parser.add_argument("--sample_size", type=int, default=50, help="#Samples created by the model for each prompt" )
     parser.add_argument("--temp", type=float, default=0.5, help="Temperature of the model")
     parser.add_argument("--path", type=str, help="Directory for the created code files")
-    parser.add_argument("--max_new_tokens", type=int)
     parser.add_argument("--k", type=int, default=0)
     parser.add_argument("--p", type=float, default=0.9)
     parser.add_argument("--repetition_penalty", type=float, default=1.0)
