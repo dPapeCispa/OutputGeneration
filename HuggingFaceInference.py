@@ -76,6 +76,11 @@ class HuggingFaceModel():
         try:
             with torch.no_grad():
                 ids = self.tokenizer(prompt, truncation=True, return_tensors="pt").input_ids.to(device)
+                token_size = ids.shape[1]
+                if(token_size > self.model.config.n_positions):
+                    raise
+                max_new_tokens = self.model.config.n_positions - token_size  
+                #print(f'Max new tokens generated: {max_new_tokens}')
                 generated_ids = self.model.generate(
                     ids, 
                     max_new_tokens=max_new_tokens, 
