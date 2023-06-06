@@ -7,7 +7,12 @@ from pathlib import Path
 from argparse import Namespace, ArgumentParser
 import shutil
 import os
+import ast
+import json
 from function_extractors.c_function_extractor import extract_c_function
+
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 
 MODEL_CLASSES = {
     "codegen": '',
@@ -23,7 +28,7 @@ file_types = {
     "js": ".js"
 }
 
-MAX_NUMBER_OF_RETRIES = 2
+MAX_NUMBER_OF_RETRIES = 5
 
 FORMATTER = logging.Formatter("%(asctime)s — %(name)s — %(levelname)s — %(message)s")
 LOG_FILE = f'{__name__}.log'
@@ -54,13 +59,23 @@ def load_prompts(path: str, column_name: str) -> List[str]:
         sys.exit(1)
     if(path.endswith('.csv')):
         df = pd.read_csv(path)
+    elif(path.endswith('.zip')):
+        df = pd.read_csv(path, compression= 'zip')
     elif path.endswith('.json'):
         df = pd.read_json(path)
     elif path.endswith('.parquet.gzip'):
         df = pd.read_parquet(path)
 
+    prompts_outer = list()
     prompts = df[column_name].tolist()
-    return prompts
+    descriptions = df['description'].tolist()
+    for idx, prompt_list in enumerate(prompts):
+        prompts_inner = list()
+        prompt_list =ast.literal_eval(prompt_list)
+        for prompt in prompt_list:
+            prompts_inner.append(f"{descriptions[idx]}\n{prompt}")
+        prompts_outer.append(prompts_inner)
+    return prompts_outer
 
 def load_model(args: Namespace) -> HuggingFaceModel:
     HuggingFaceModelInstance = HuggingFaceModel(args.dtype, args.bf, args.deepspeed)
@@ -121,8 +136,8 @@ def functional_output_generation(args: Namespace, prompt: str, model: HuggingFac
                 sample_size=sample_size
             )
         except Exception as e:
-            logger.debug(f'Error generating output. Output: {e}')
-            sys.exit(1)
+            logger.debug(f'Error generating output. Output: {e}. ')
+            return []
         decoded_output = model.decode_tensor_batch(output)
         extracted_functions = extract_function(decoded_output, args.lang, prompt)
         correct_outputs.append(extracted_functions)
@@ -135,6 +150,7 @@ def main(args: Namespace, path: Path) -> None:
     logger.info(args)
     logger.debug(f'Loading prompts...')
     prompts = load_prompts(args.prompts, args.column_name)
+    logger.debug(f'{len(prompts)} loaded...')
     logger.debug(f'Loading model...')
     model = load_model(args)
     for sample_idx, prompt_list in enumerate(prompts):
@@ -148,6 +164,9 @@ def main(args: Namespace, path: Path) -> None:
                 create_files(p_idx, sample_idx, correct_outputs, path, args.lang.lower())
             else:
                 logger.debug(f"No correct outputs for prompt {p_idx}. Not creating files. Skipping...")
+    stats_file = (path / 'stats.txt')
+    with open(stats_file, 'w') as f:
+        json.dump(args.__dict__, f, indent=2)
 
 if __name__ == "__main__":
     os.environ['TOKENIZERS_PARALLELISM'] = 'true'
